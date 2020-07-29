@@ -15,6 +15,7 @@ import me.jensvh.spotifree.api.spotify.UrlType;
 import me.jensvh.spotifree.api.ytmusic.Video;
 import me.jensvh.spotifree.mp3agic.Mp3agic;
 import me.jensvh.spotifree.spotify.SpotifyAPI;
+import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Utils;
 import me.jensvh.spotifree.ytdl.YtDlApi;
 import me.jensvh.spotifree.ytmusic.YTMusicAPI;
@@ -24,7 +25,7 @@ public class Spotifree {
 	public static void downloadSong(String id) {
 		Track track = SpotifyAPI.getTrack(id);
 		downloadTrack(track, null);
-		System.out.println("Downloaded " + track.getName() + " by " + Arrays.toString(track.getArtists()));
+		Console.print("Downloaded " + track.getName() + " by " + Arrays.toString(track.getArtists()));
 	}
 	
 	public static void downloadPlaylist(String id) {

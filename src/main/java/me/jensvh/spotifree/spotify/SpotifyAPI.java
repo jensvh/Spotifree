@@ -16,6 +16,7 @@ import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.http.GetRequest;
 import me.jensvh.spotifree.http.GsonResponseHandler;
 import me.jensvh.spotifree.http.PostRequest;
+import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Utils;
 
 public class SpotifyAPI {
@@ -71,7 +72,7 @@ public class SpotifyAPI {
 	
 	public static SimplifiedTrack[] getRecommendations(Track[] tracks, int max) {
 		if (tracks.length > 5) {
-			System.err.println("Spotify track recommendation can only get 5 tracks, no more.");
+			Console.errPrint("Spotify track recommendation can only get 5 tracks, no more.");
 			return null;
 		}
 		checkConnection();

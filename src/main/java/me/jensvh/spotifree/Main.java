@@ -3,6 +3,7 @@ package me.jensvh.spotifree;
 import java.util.Optional;
 
 import me.jensvh.spotifree.api.spotify.UrlType;
+import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Error;
 import me.jensvh.spotifree.ytdl.YtDlApi;
 
@@ -22,27 +23,27 @@ public class Main {
 	private static final String SONGS_PER_GROUP_RECOM_PLAYLIST = "5";
 	
 	public static void main(String[] args) throws Error {
-		Bootstrap bootstrap = new Bootstrap(args);
+		Bootloader boot = new Bootloader(args);
 		
 		// options
-		downloadLrc = bootstrap.get("lrc");
-		debugging = bootstrap.get("debug");
-		boolean recommendedPlaylist = bootstrap.get("recom") || bootstrap.get("recommended");
-		int max_songs = Integer.valueOf(Optional.ofNullable(bootstrap.getArg("max")).orElse(MAX_SONGS_RECOM_PLAYLIST));
-		int recom_per_song = Integer.valueOf(Optional.ofNullable(bootstrap.getArg("group")).orElse(SONGS_PER_GROUP_RECOM_PLAYLIST));
-		String url = bootstrap.getArg("url");
+		downloadLrc = boot.get("lrc");
+		debugging = boot.get("debug");
+		boolean recommendedPlaylist = boot.get("recom") || boot.get("recommended");
+		int max_songs = Integer.valueOf(Optional.ofNullable(boot.getArg("max")).orElse(MAX_SONGS_RECOM_PLAYLIST));
+		int recom_per_song = Integer.valueOf(Optional.ofNullable(boot.getArg("group")).orElse(SONGS_PER_GROUP_RECOM_PLAYLIST));
+		String url = boot.getArg("url");
 		
 		if (url == null) {
-			System.out.println("No url found.");
-			System.out.println("Please use: java -jar spotifree.jar --url <url>");
-			System.out.println("-lrc => for downloading lrc files with lyrics");
-			System.out.println("-recom or -recommended => for downloading recommended songs for a playlist");
-			System.out.println("--max <amount> => for the amount of recommended songs to download");
-			System.out.println("--group <amount> => for the amount of recommended songs per group of songs");
+			Console.println("No url found.");
+			Console.println("Usage: java -jar spotifree.jar --url <url>");
+			Console.println("-lrc => for downloading lrc files with lyrics");
+			Console.println("-recom or -recommended => for downloading recommended songs for a playlist");
+			Console.println("--max <amount> => for the amount of recommended songs to download");
+			Console.println("--group <amount> => for the amount of recommended songs per group of songs");
 			return;
 		}
 		
-		System.out.print("Spotifree 0% initializing...\r");
+		Console.print("Spotifree 0% initializing...");
 		
 		// Export libraries
 		YtDlApi.unpack();
@@ -54,7 +55,7 @@ public class Main {
 		String id = Spotifree.getId(url);
 
 		if (type == UrlType.UNKNOWN || id == null) {
-			System.out.println("Wrong url, currently only Spotify url's are supported.");
+			Console.println("Wrong url, currently only Spotify url's are supported.");
 			return;
 		}
 		
@@ -62,7 +63,7 @@ public class Main {
 			Spotifree.downloadAndCreateRecommendedPlaylist(id, max_songs, recom_per_song);
 		}
 		else if (recommendedPlaylist) {
-			System.out.println("You can only download a recommended playlist from a playlist url.");
+			Console.println("You can only download a recommended playlist from a playlist url.");
 		}
 		else {
 			switch (type) {
@@ -76,7 +77,7 @@ public class Main {
 				Spotifree.downloadPlaylist(id);
 				break;
 			default:
-				System.out.println("Something went wrongt, in theorie there is no way to get here.");
+				Console.println("Something went wrongt, in theorie there is no way to get here.");
 				break;
 			}
 		}

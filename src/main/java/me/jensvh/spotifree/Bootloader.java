@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Bootstrap {
+public class Bootloader {
 	
 	private List<String> parameters;
 	private Map<String, String> arguments;
 	
-	public Bootstrap(String[] args) {
+	public Bootloader(String[] args) {
 		this.parameters = new ArrayList<String>();
 		this.arguments = new HashMap<String, String>();
 		readInputArgs(args);

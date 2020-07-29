@@ -1,5 +1,7 @@
 package me.jensvh.spotifree;
 
+import me.jensvh.spotifree.utils.Console;
+
 public class Progressbar {
 
 	private final String prefix;
@@ -30,22 +32,13 @@ public class Progressbar {
 		print();
 	}
 	
-	private int greatest_length = 0;
 	private void print() {
 		// Example: Prefix 25% 5/20 Downloading Boulevard of broken dreams;
-		String format;
 		int percent = 100 * current / max;
 		String message = String.format("%s %d%% %d/%d %s", prefix, percent, current, max, suffix);
-		if (message.length() >= greatest_length) {
-			greatest_length = message.length();
-			format = "%s\r";
-		} else {
-			int diff = greatest_length - message.length();
-			format = "%s%"+diff+"s\r";
-		}
-        System.out.print(String.format(format, message, " "));
+        Console.print(message);
         if (current >= max) {
-        	System.out.println("\ndone");
+        	Console.println("\ndone");
 		}
 	}
 	

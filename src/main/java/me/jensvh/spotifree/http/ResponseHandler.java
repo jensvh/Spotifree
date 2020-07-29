@@ -18,12 +18,13 @@ public class ResponseHandler<T> implements org.apache.http.client.ResponseHandle
 	}
 	
 	@Override
-	public T handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+	public T handleResponse(HttpResponse response) throws ClientProtocolException, IOException, Error {
 		int code = response.getStatusLine().getStatusCode();
 		String entity = EntityUtils.toString(response.getEntity());
+		String reason = response.getStatusLine().getReasonPhrase();
 		
 		if (code != 200) {
-			throw new Error(code, new HttpException(), response.getStatusLine().getReasonPhrase() + " with origin: " + response.getLastHeader("Location").getValue());
+			throw new Error(code, new HttpException(), reason);
 		}
 		
 		return handler.handle(entity);

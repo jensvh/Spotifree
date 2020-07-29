@@ -7,6 +7,7 @@ import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.api.ytmusic.Filter;
 import me.jensvh.spotifree.api.ytmusic.Video;
+import me.jensvh.spotifree.utils.Console;
 
 public class YTMusicAPI {
 
@@ -30,7 +31,7 @@ public class YTMusicAPI {
 			if (video.equals(track))
 				return video;
 		}
-		System.err.println("Could not find a comparable track for " + track.getName() + " by " + track.getArtists()[0].getName() + ".");
+		Console.errPrint("Could not find a comparable track for " + track.getName() + " by " + track.getArtists()[0].getName() + ".");
 		return null;
 	}
 	
@@ -40,7 +41,7 @@ public class YTMusicAPI {
 			if (video.equals(track))
 				return video;
 		}
-		System.err.println("Could not find a comparable track for " + track.getName() + " by " + track.getArtists()[0].getName() + ".");
+		Console.errPrint("Could not find a comparable track for " + track.getName() + " by " + track.getArtists()[0].getName() + ".");
 		return null;
 	}
 	

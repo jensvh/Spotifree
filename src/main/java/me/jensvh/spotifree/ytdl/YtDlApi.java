@@ -32,7 +32,7 @@ public class YtDlApi {
 				.addArgument("--audio-quality", "0") // FFmpeg best quality
 				.addArgument("-f", "bestaudio") // download best audio
 				.addArgument("-o", file_name + ".%(ext)s")
-				.addArgument("\"" + id + "\"");
+				.addArgument("\"https://www.youtube.com/watch?v=" + id + "\"");
 		if (Main.downloadLrc) {
 			program.addArgument("--write-sub")
 					.addArgument("--convert-subs", "lrc")
