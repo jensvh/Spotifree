@@ -7,7 +7,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import me.jensvh.spotifree.api.ytmusic.Filter;
-import me.jensvh.spotifree.api.ytmusic.Song;
 import me.jensvh.spotifree.api.ytmusic.Video;
 import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Error;
@@ -26,44 +25,51 @@ public class YtDeserializer {
 				JsonObject object = songs.get(i).getAsJsonObject()
 						.getAsJsonObject("musicResponsiveListItemRenderer");
 				Video song = new Video();
-				if (filter.equals(Filter.SONGS)) {
+				/*if (filter.equals(Filter.SONGS)) {
 					song = new Song();
-					((Song)song).setAlbum(object.getAsJsonArray("flexColumns").get(2).getAsJsonObject()
+					((Song)song).setAlbum(object.getAsJsonArray("flexColumns")
+							.get(2)
+							.getAsJsonObject()
 							.getAsJsonObject("musicResponsiveListItemFlexColumnRenderer")
 							.getAsJsonObject("text")
-							.getAsJsonArray("runs").get(0).getAsJsonObject()
-							.get("text").getAsString());
-				}
-				song.setVideo_id(object.getAsJsonObject("doubleTapCommand")
-						.getAsJsonObject("watchEndpoint")
+							.getAsJsonArray("runs")
+							.get(0)
+							.getAsJsonObject()
+							.get("text")
+							.getAsString());
+				}*/
+				song.setVideo_id(object.getAsJsonObject("overlay")
+						.getAsJsonObject("musicItemThumbnailOverlayRenderer")
+						.getAsJsonObject("content").getAsJsonObject("musicPlayButtonRenderer")
+						.getAsJsonObject("playNavigationEndpoint").getAsJsonObject("watchEndpoint")
 						.get("videoId").getAsString());
 				song.setTitle(object.getAsJsonArray("flexColumns").get(0).getAsJsonObject()
 						.getAsJsonObject("musicResponsiveListItemFlexColumnRenderer")
 						.getAsJsonObject("text")
 						.getAsJsonArray("runs").get(0).getAsJsonObject()
 						.get("text").getAsString());
-				song.setDuration(object.getAsJsonArray("flexColumns").get(3).getAsJsonObject()
+				/*song.setDuration(object.getAsJsonArray("flexColumns").get(3).getAsJsonObject()
 						.getAsJsonObject("musicResponsiveListItemFlexColumnRenderer")
 						.getAsJsonObject("text")
 						.getAsJsonArray("runs").get(0).getAsJsonObject()
-						.get("text").getAsString());
+						.get("text").getAsString());*/
 				JsonArray artist_array = object.getAsJsonArray("flexColumns").get(1).getAsJsonObject()
 						.getAsJsonObject("musicResponsiveListItemFlexColumnRenderer")
 						.getAsJsonObject("text")
 						.getAsJsonArray("runs");
 				String[] artists = new String[(artist_array.size() + 1) / 2];
 				int k = 0;
-				for (int j = 0; j < artist_array.size(); j += 2) {
+				for (int j = 0; j < artist_array.size()-2; j += 2) {
 					artists[k] = artist_array.get(j).getAsJsonObject()
 									.get("text").getAsString();
 					k++;
 				}
+				song.setDuration(artist_array.get(artist_array.size()-1).getAsJsonObject().get("text").getAsString());
 				song.setArtists(artists);
 				list.add(song);
 			}
 			return list;
 		} catch (NullPointerException ex) {
-			System.out.println(tree);
 			Console.errPrint(tree.toString());
 			Console.errPrint("");
 			ex.printStackTrace();

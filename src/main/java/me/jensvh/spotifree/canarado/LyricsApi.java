@@ -12,12 +12,13 @@ import me.jensvh.spotifree.http.GetRequest;
 import me.jensvh.spotifree.http.GsonResponseHandler;
 import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Error;
+import me.jensvh.spotifree.utils.Utils;
 
 public class LyricsApi {
 	
 	public static String getLyrics(SimplifiedTrack track) {
 		try {
-			String url = URLEncoder.encode(track.getName() + " " + Arrays.toString(track.getArtists()).replaceAll("[\\[\\]\\,]", ""), StandardCharsets.UTF_8.toString());
+			String url = URLEncoder.encode(Utils.removeInvalidPathChars(track.getName() + " " + Arrays.toString(track.getArtists()).replaceAll("[\\[\\]\\,]", "")), StandardCharsets.UTF_8.toString());
 			GetRequest get = new GetRequest("https://api.canarado.xyz/lyrics/" + url);
 			
 			try {

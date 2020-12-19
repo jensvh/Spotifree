@@ -8,17 +8,18 @@ import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.api.ytmusic.Filter;
 import me.jensvh.spotifree.api.ytmusic.Video;
 import me.jensvh.spotifree.utils.Console;
+import me.jensvh.spotifree.utils.Utils;
 
 public class YTMusicAPI {
 
 	private static List<Video> search(String query) {
 		List<Video> results = new ArrayList<Video>();
 		MusicRequest request = new MusicRequest("search")
-				.setQuery(query)
+				.setQuery(Utils.removeInvalidPathChars(query))
 				.setFilter(Filter.SONGS);
 		results.addAll(request.send());
 		request = new MusicRequest("search")
-				.setQuery(query)
+				.setQuery(Utils.removeInvalidPathChars(query))
 				.setFilter(Filter.VIDEO);
 		results.addAll(request.send());
 		return results;

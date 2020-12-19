@@ -14,6 +14,7 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.canarado.LyricsApi;
+import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Error;
 import me.jensvh.spotifree.utils.Utils;
 
@@ -48,13 +49,17 @@ public class Mp3agic {
 			tag.setAlbumImage(data, "image/jpg");
 			
 			// Add lyrics
-			String lyrics = LyricsApi.getLyrics(track);
-			if (lyrics != null)
-				tag.setLyrics(lyrics);
+			try {
+				String lyrics = LyricsApi.getLyrics(track);
+				if (lyrics != null)
+					tag.setLyrics(lyrics);
+			} catch (Error err) {
+				Console.errPrint(err.getMessage());
+			}
 			
 			// Save
 			String path = (file.getParent() == null) ? "" : file.getParent() + File.separator;
-			mp3.save(path + Utils.removeInBrackets(track.getName()) + " by " + Arrays.toString(track.getArtists()) + ".mp3");
+			mp3.save(path + Utils.removeInvalidPathChars(Utils.removeInBrackets(track.getName()) + " by " + Arrays.toString(track.getArtists())) + ".mp3");
 		} catch (UnsupportedTagException | InvalidDataException | IOException | NotSupportedException e) {
 			file.delete();
 			throw new Error(4, e, "Could be anything, it just happened while adding metadata into the mp3 file.");
@@ -83,13 +88,17 @@ public class Mp3agic {
 			tag.setKey(track.getId());
 			
 			// Add lyrics
-			String lyrics = LyricsApi.getLyrics(track);
-			if (lyrics != null)
-				tag.setLyrics(lyrics);
+			try {
+				String lyrics = LyricsApi.getLyrics(track);
+				if (lyrics != null)
+					tag.setLyrics(lyrics);
+			} catch(Error err) {
+				Console.errPrint(err.getMessage());
+			}
 			
 			// Save
 			String path = (file.getParent() == null) ? "" : file.getParent() + File.separator;
-			mp3.save(path + Utils.removeInBrackets(Utils.removeInvalidPathChars(track.getName())) + " by " + Arrays.toString(track.getArtists()) + ".mp3");
+			mp3.save(path + Utils.removeInvalidPathChars(Utils.removeInBrackets(Utils.removeInvalidPathChars(track.getName())) + " by " + Arrays.toString(track.getArtists())) + ".mp3");
 		} catch (UnsupportedTagException e) {
 			e.printStackTrace();
 		} catch (InvalidDataException e) {
