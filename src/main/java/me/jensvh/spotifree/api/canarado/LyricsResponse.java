@@ -5,7 +5,6 @@ import lombok.Getter;
 @Getter
 public class LyricsResponse {
 
-	private Lyrics[] content;
-	private Status status;
+	private String lyrics;
 	
 }

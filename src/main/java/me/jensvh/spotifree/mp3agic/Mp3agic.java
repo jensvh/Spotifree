@@ -49,15 +49,15 @@ public class Mp3agic {
 			tag.setAlbumImage(data, "image/jpg");
 			
 			// Add lyrics
-			/* Lyrics server is down
 			try {
 				String lyrics = LyricsApi.getLyrics(track);
 				if (lyrics != null)
 					tag.setLyrics(lyrics);
+			
 			} catch (Error err) {
 				Console.print("Error with lyrics");
 			}
-			*/
+			
 			// Save
 			String path = (file.getParent() == null) ? "" : file.getParent() + File.separator;
 			mp3.save(path + Utils.removeInvalidPathChars(Utils.removeInBrackets(track.getName()) + " by " + Arrays.toString(track.getArtists())) + ".mp3");
