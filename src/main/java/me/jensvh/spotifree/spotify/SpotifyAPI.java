@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import me.jensvh.spotifree.api.spotify.Album;
 import me.jensvh.spotifree.api.spotify.Auth;
+import me.jensvh.spotifree.api.spotify.PagingPlaylist;
 import me.jensvh.spotifree.api.spotify.Playlist;
 import me.jensvh.spotifree.api.spotify.RecommendedTracks;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
@@ -52,6 +53,15 @@ public class SpotifyAPI {
 				.addParameter("fields", "id,name,description,tracks(items(track(id,name,album(id,name,artists,images,release_date),artists(id,name),track_number,duration_ms)),next)");
 		Playlist playlist = get.send(new GsonResponseHandler<Playlist>(Playlist.class));
 		playlist.getNextTracks();
+		return playlist;
+	}
+
+	public static PagingPlaylist getPlaylistPaging(String url) {
+		checkConnection();
+		GetRequest get = new GetRequest(url)
+				.addHeader("Authorization", "Bearer " + token)
+				.addParameter("fields", "items(track(id,name,album(id,name,artists,images,release_date),artists(id,name),track_number,duration_ms))");
+		PagingPlaylist playlist = get.send(new GsonResponseHandler<PagingPlaylist>(PagingPlaylist.class));
 		return playlist;
 	}
 	

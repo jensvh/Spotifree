@@ -22,7 +22,6 @@ public class ResponseHandler<T> implements org.apache.http.client.ResponseHandle
 		int code = response.getStatusLine().getStatusCode();
 		String entity = EntityUtils.toString(response.getEntity());
 		String reason = response.getStatusLine().getReasonPhrase();
-		
 		if (code != 200) {
 			throw new Error(code, new HttpException(), reason);
 		}

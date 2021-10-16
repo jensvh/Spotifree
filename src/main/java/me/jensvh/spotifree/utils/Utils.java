@@ -26,7 +26,10 @@ public class Utils {
 	}
 	
 	public static String simplify(String str) {
-		return str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+		try {
+			return str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+		} catch (NullPointerException e) {}
+		return "";
 	}
 	
 	public static String removeInBrackets(String str) {

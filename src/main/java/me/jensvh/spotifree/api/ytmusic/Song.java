@@ -28,7 +28,9 @@ public class Song extends Video {
 			return false;
 		}
 		return (Utils.simplify(album).contains(Utils.simplify(track.getAlbum().getName()))
-				|| Utils.simplify(album).contains(Utils.simplify(track.getName())));
+				|| Utils.simplify(album).contains(Utils.simplify(track.getName())) 
+				|| Utils.simplify(track.getAlbum().getName()).contains(Utils.simplify(album))
+				|| Utils.simplify(track.getName()).contains(Utils.simplify(album)));
 	}
 	
 	@Override

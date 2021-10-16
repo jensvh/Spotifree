@@ -35,7 +35,6 @@ public class GetRequest {
 			URI uri = new URIBuilder(base_url)
 						.addParameters(parameters)
 						.build();
-			
 			HttpGet get = new HttpGet(uri);
 			headers.forEach((header) -> get.addHeader(header));
 			

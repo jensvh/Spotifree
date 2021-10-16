@@ -24,19 +24,21 @@ public class Playlist {
 	
 	public void getNextTracks() {
 		// Add current tracks
-		for (PlaylistTrack track : paging.getItems()) {
-			tracks.add(track.getTrack());
-		}
-		
-		// if there are more tracks get them
-		if (paging.getNext() != null) {
-			Playlist playlist = SpotifyAPI.get(paging.getNext(), Playlist.class);
-			playlist.getNextTracks();
-			tracks.addAll(playlist.getTracks());
-		}
-		
-		// Clear some memory
-		paging = null;
+		do {
+			for (PlaylistTrack track : paging.getItems()) {
+			    if (track.getTrack() == null || track.getTrack().getId() == null) 
+			        continue;
+				tracks.add(track.getTrack());
+			}
+			
+			// if there are more tracks get them
+			if (paging.getNext() != null) {
+				
+				paging = SpotifyAPI.getPlaylistPaging(paging.getNext());
+			} else {
+				paging = null;
+			}
+		} while (paging != null);
 	}
 	
 	@Override
@@ -46,7 +48,8 @@ public class Playlist {
 				"name: " + name,
 				"description: " + description,
 				"track_count: " + tracks.size(),
-				"tracks: " + tracks.toString()
+				"tracks: " + tracks.toString(),
+				"paging: " + paging
 			);
 	}
 	

@@ -94,23 +94,39 @@ public class Spotifree {
 	}
 	
 	private static void downloadTrack(Track track, String path) {
-		Video video = YTMusicAPI.getMostSuitable(track);
-		if (video == null)
-			return;
-		File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
-		//Mp3Tagger.tagMp3(file, track);
-		Mp3agic.addID3Tag(file, track);
-		file.delete();
+		try {
+			Video video = YTMusicAPI.getMostSuitable(track);
+			if (video == null)
+				return;
+			File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
+			//Mp3Tagger.tagMp3(file, track);
+			Mp3agic.addID3Tag(file, track);
+			file.delete();
+		} catch (Exception e) {
+			if (Main.debugging) {
+				e.printStackTrace();
+			} else {
+				System.out.println("Error while downloading song, proceeding to next song.");
+			}
+		}
 	}
 	
 	private static void downloadSimplifiedTrack(SimplifiedTrack track, String path) {
-		Video video = YTMusicAPI.getMostSuitable(track);
-		if (video == null)
-			return;
-		File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
-		//Mp3Tagger.tagMp3(file, track);
-		Mp3agic.addID3Tag(file, track);
-		file.delete();
+		try {
+			Video video = YTMusicAPI.getMostSuitable(track);
+			if (video == null)
+				return;
+			File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
+			//Mp3Tagger.tagMp3(file, track);
+			Mp3agic.addID3Tag(file, track);
+			file.delete();
+		} catch (Exception e) {
+			if (Main.debugging) {
+				e.printStackTrace();
+			} else {
+				System.out.println("Error while downloading song, proceeding to next song.");
+			}
+		}
 	}
 	
 	public static UrlType getUrlType(String url) {
