@@ -9,12 +9,8 @@ import lombok.Setter;
 @Setter
 public class Auth {
 	
-	@SerializedName("access_token")
+	@SerializedName("accessToken")
 	private String token;
-	@SerializedName("token_type")
-	private String type;
-	@SerializedName("expires_in")
-	private int expires_time;
 
 	
 	

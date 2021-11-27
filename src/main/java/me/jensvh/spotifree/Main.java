@@ -3,6 +3,7 @@ package me.jensvh.spotifree;
 import java.util.Optional;
 
 import me.jensvh.spotifree.api.spotify.UrlType;
+import me.jensvh.spotifree.spotify.SpotifyAPI;
 import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Error;
 import me.jensvh.spotifree.ytdl.YtDlApi;
@@ -31,6 +32,7 @@ public class Main {
 		boolean recommendedPlaylist = boot.get("recom") || boot.get("recommended");
 		int max_songs = Integer.valueOf(Optional.ofNullable(boot.getArg("max")).orElse(MAX_SONGS_RECOM_PLAYLIST));
 		int recom_per_song = Integer.valueOf(Optional.ofNullable(boot.getArg("group")).orElse(SONGS_PER_GROUP_RECOM_PLAYLIST));
+		SpotifyAPI.bearer = boot.getArg("bearer");
 		String url = boot.getArg("url");
 		
 		if (url == null) {
@@ -40,6 +42,7 @@ public class Main {
 			Console.println("-recom or -recommended => for downloading recommended songs for a playlist");
 			Console.println("--max <amount> => for the amount of recommended songs to download");
 			Console.println("--group <amount> => for the amount of recommended songs per group of songs");
+			Console.println("--bearer <bearer> => webPlayer bearer for lyrics.");
 			return;
 		}
 		

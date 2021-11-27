@@ -12,6 +12,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -37,7 +39,10 @@ public class PostRequest {
 	
 	public <T> T send(Handler<T> handler) {
 		try {
-			HttpClient client = HttpClients.createDefault();
+		    HttpClient client = HttpClients.custom()
+		            .setDefaultRequestConfig(RequestConfig.custom()
+		                    .setCookieSpec(CookieSpecs.STANDARD).build())
+		            .build();
 			URI uri = new URIBuilder(base_url)
 						.addParameters(parameters)
 						.build();

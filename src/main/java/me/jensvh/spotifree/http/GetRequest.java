@@ -9,6 +9,8 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -30,13 +32,19 @@ public class GetRequest {
 	}
 	
 	public <T> T send(Handler<T> handler) {
-		try {
-			HttpClient client = HttpClients.createDefault();
+	    try {
+		    HttpClient client = HttpClients.custom()
+		            .setDefaultRequestConfig(RequestConfig.custom()
+		                    .setCookieSpec(CookieSpecs.STANDARD).build())
+		            .build();
 			URI uri = new URIBuilder(base_url)
 						.addParameters(parameters)
 						.build();
 			HttpGet get = new HttpGet(uri);
-			headers.forEach((header) -> get.addHeader(header));
+			
+			for (Header header : this.headers) {
+			    get.addHeader(header.getName(), header.getValue());
+			}
 			
 			return client.execute(get, new ResponseHandler<T>(handler));
 		} catch(IOException | URISyntaxException ex) {

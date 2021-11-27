@@ -11,9 +11,11 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.NotSupportedException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import me.jensvh.spotifree.api.spotify.Lyrics;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.canarado.LyricsApi;
+import me.jensvh.spotifree.spotify.SpotifyAPI;
 import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Error;
 import me.jensvh.spotifree.utils.Utils;
@@ -49,14 +51,26 @@ public class Mp3agic {
 			tag.setAlbumImage(data, "image/jpg");
 			
 			// Add lyrics
+			// New spotify lyrics api
 			try {
+			    Lyrics lyrics = SpotifyAPI.getLyrics(track.getId());
+			    if (lyrics.getLanguage().equalsIgnoreCase("en")) {
+			        String fullLyrics = Utils.joinLyricsLines(lyrics.getLines());
+			        tag.setLyrics(fullLyrics);
+			    }
+			} catch (Error err) {
+			    err.printStackTrace();
+			}
+			
+			/* Deprecated, old api
+			 * try {
 				String lyrics = LyricsApi.getLyrics(track);
 				if (lyrics != null)
 					tag.setLyrics(lyrics);
 			
 			} catch (Error err) {
 				Console.print("Error with lyrics");
-			}
+			}*/
 			
 			// Save
 			String path = (file.getParent() == null) ? "" : file.getParent() + File.separator;

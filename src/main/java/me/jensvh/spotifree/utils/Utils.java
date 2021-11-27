@@ -14,6 +14,7 @@ import java.util.Random;
 import org.apache.commons.io.FilenameUtils;
 
 import me.jensvh.spotifree.api.spotify.Album;
+import me.jensvh.spotifree.api.spotify.LyricsLine;
 import me.jensvh.spotifree.api.spotify.Playlist;
 import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.mp3agic.Mp3agic;
@@ -42,6 +43,22 @@ public class Utils {
 	
 	public static String removeInvalidPathChars(String str) {
 		return str.replaceAll("[\\\\/:*?\"<>|]", "");
+	}
+	
+	public static String removeAsciiColors(String str) {
+	    return str.replaceAll("\u001B\\[[;\\d]*m", "");
+	}
+	
+	public static String joinLyricsLines(LyricsLine[] lines) {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append(lines[0].getWords());
+	    
+	    for (int i = 1; i < lines.length; i++) {
+	        builder.append("\n");
+	        builder.append(lines[i].getWords());
+	    }
+	    
+	    return builder.toString();
 	}
 	
 	public static File createFolder(String name) {
