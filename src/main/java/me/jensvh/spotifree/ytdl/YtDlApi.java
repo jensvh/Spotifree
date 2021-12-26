@@ -10,7 +10,7 @@ public class YtDlApi {
 	
 	// Command: youtube-dl.exe --sub-lang en --write-sub --convert-subs lrc -x -f bestaudio --audio-format mp3 --audio-quality 0 --add-metadata --id "https://www.youtube.com/watch?v=CJzaYLc4pPY"
 	
-	private static final String youtubedl_file = "youtube-dl.exe";
+	private static final String youtubedl_file = "yt-dlp.exe";
 	private static final String ffmpeg_file = "ffmpeg.exe";
 	
 	public static void unpack() {

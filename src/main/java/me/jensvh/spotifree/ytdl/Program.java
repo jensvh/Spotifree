@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import me.jensvh.spotifree.Main;
 import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Error;
 
@@ -42,10 +41,9 @@ public class Program {
 			int exitCode = process.waitFor();
 			
 			if (exitCode != 0) {
-				if (Main.debugging) {
-					Console.errPrint("Command: " + Arrays.toString(args.stream().toArray(String[]::new)));
-					Console.errPrint(stdErr.toString());
-				}
+				
+				Console.errPrint("Command: " + Arrays.toString(args.stream().toArray(String[]::new)));
+				Console.errPrint(stdErr.toString());
 				throw new Error(exitCode, new IOException(), "The bridge to youtube-dl is gone");
 			}
 			
