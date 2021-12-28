@@ -33,7 +33,6 @@ public class Playlist {
 			
 			// if there are more tracks get them
 			if (paging.getNext() != null) {
-				
 				paging = SpotifyAPI.getPlaylistPaging(paging.getNext());
 			} else {
 				paging = null;

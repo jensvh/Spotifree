@@ -1,5 +1,7 @@
 package me.jensvh.spotifree.spotify;
 
+import java.sql.SQLException;
+
 import me.jensvh.spotifree.api.spotify.Album;
 import me.jensvh.spotifree.api.spotify.Auth;
 import me.jensvh.spotifree.api.spotify.ColoredLyricsHelper;
@@ -9,20 +11,29 @@ import me.jensvh.spotifree.api.spotify.Playlist;
 import me.jensvh.spotifree.api.spotify.RecommendedTracks;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
+import me.jensvh.spotifree.firefox.FirefoxImpl;
 import me.jensvh.spotifree.http.GetRequest;
 import me.jensvh.spotifree.http.GsonResponseHandler;
 import me.jensvh.spotifree.utils.Console;
-import me.jensvh.spotifree.utils.Error;
 import me.jensvh.spotifree.utils.Utils;
 
 public class SpotifyAPI {
 
 	// Spotify data
     public static String token = null;
-	public static String bearer = null;
 	
 	public static void openconnection() {
-	    GetRequest post = new GetRequest("https://open.spotify.com/get_access_token?reason=transport&productType=web_player");
+	    String cookies = "";
+	    
+	    try {
+            cookies = FirefoxImpl.getCookies();
+        } catch (SQLException e) {
+            System.out.println();
+            e.printStackTrace();
+        }
+	    
+	    GetRequest post = new GetRequest("https://open.spotify.com/get_access_token?reason=transport&productType=web_player")
+	            .addHeader("Cookie", cookies);
         Auth auth = post.send(new GsonResponseHandler<Auth>(Auth.class));
         token = auth.getToken();
 	}
@@ -48,9 +59,9 @@ public class SpotifyAPI {
 	public static PagingPlaylist getPlaylistPaging(String url) {
 		checkConnection();
 		GetRequest get = new GetRequest(url)
-				.addHeader("Authorization", "Bearer " + token)
-				.addParameter("fields", "items(track(id,name,album(id,name,artists,images,release_date),artists(id,name),track_number,duration_ms))");
+				.addHeader("Authorization", "Bearer " + token);
 		PagingPlaylist playlist = get.send(new GsonResponseHandler<PagingPlaylist>(PagingPlaylist.class));
+		
 		return playlist;
 	}
 	
@@ -64,24 +75,16 @@ public class SpotifyAPI {
 	}
 	
 	public static Lyrics getLyrics(String trackId) {
-	    if (bearer == null)
-	        throw new Error(12, new NullPointerException(), "No bearer given.");
-	    
 	    checkConnection();
 	    String url = "https://spclient.wg.spotify.com/color-lyrics/v2/track/" + trackId + "?format=json&vocalRemoval=false&market=from_token";
 
-	    System.out.println();
-	    System.out.println(url);
-	    System.out.println("Bearer: " + bearer);
-	    System.out.println();
-	    
 	    GetRequest get = new GetRequest(url)
 	            .addHeader("app-platform", "WebPlayer")
-	            .addHeader("authorization", "Bearer " + bearer)
 	            .addHeader("Connection", "close")
 	            .addHeader("Sec-Fetch-Dest", "empty")
 	            .addHeader("Sec-Fetch-Mode", "cors")
-	            .addHeader("Sec-Fetch-Site", "same-site");
+	            .addHeader("Sec-Fetch-Site", "same-site")
+	            .addHeader("authorization", "Bearer " + token);
 	    
 	    return get.send(new GsonResponseHandler<ColoredLyricsHelper>(ColoredLyricsHelper.class)).getLyrics();
 	}
