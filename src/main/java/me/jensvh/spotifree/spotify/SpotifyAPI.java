@@ -7,6 +7,7 @@ import me.jensvh.spotifree.api.spotify.Auth;
 import me.jensvh.spotifree.api.spotify.ColoredLyricsHelper;
 import me.jensvh.spotifree.api.spotify.Lyrics;
 import me.jensvh.spotifree.api.spotify.PagingPlaylist;
+import me.jensvh.spotifree.api.spotify.PagingPlaylistItem;
 import me.jensvh.spotifree.api.spotify.Playlist;
 import me.jensvh.spotifree.api.spotify.RecommendedTracks;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
@@ -110,6 +111,23 @@ public class SpotifyAPI {
 		
 		return recommendedTracks.getTracks();
 	}
+	
+	public static PagingPlaylistItem getPlaylists() {
+	    checkConnection();
+	    
+	    GetRequest get = new GetRequest("https://api.spotify.com/v1/me/playlists")
+	            .addHeader("Authorization", "Bearer " + token);
+	    return get.send(new GsonResponseHandler<PagingPlaylistItem>(PagingPlaylistItem.class));
+	}
+	
+	public static PagingPlaylistItem getPlaylistItemPaging(String url) {
+        checkConnection();
+        GetRequest get = new GetRequest(url)
+                .addHeader("Authorization", "Bearer " + token);
+        PagingPlaylistItem playlist = get.send(new GsonResponseHandler<PagingPlaylistItem>(PagingPlaylistItem.class));
+        
+        return playlist;
+    }
 	
 	private static void checkConnection() {
 		if (token == null)

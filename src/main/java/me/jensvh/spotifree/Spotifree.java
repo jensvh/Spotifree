@@ -8,7 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.jensvh.spotifree.api.spotify.Album;
+import me.jensvh.spotifree.api.spotify.PagingPlaylistItem;
 import me.jensvh.spotifree.api.spotify.Playlist;
+import me.jensvh.spotifree.api.spotify.PlaylistItem;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.api.spotify.UrlType;
@@ -127,6 +129,28 @@ public class Spotifree {
 				System.out.println("Error while downloading song, proceeding to next song.");
 			}
 		}
+	}
+	
+	public static List<String> getPlaylists() {
+	    List<String> ids = new ArrayList<>();
+        PagingPlaylistItem playlists = SpotifyAPI.getPlaylists();
+        
+        do {
+            for (PlaylistItem playlist : playlists.getItems()) {
+                if (playlist.getId() == null || playlist.getId().isEmpty()) 
+                    continue;
+                ids.add(playlist.getId());
+            }
+            
+            // if there are more tracks get them
+            if (playlists.getNext() != null) {
+                playlists = SpotifyAPI.getPlaylistItemPaging(playlists.getNext());
+            } else {
+                playlists = null;
+            }
+        } while (playlists != null);
+        
+        return ids;
 	}
 	
 	public static UrlType getUrlType(String url) {

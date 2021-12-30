@@ -1,5 +1,6 @@
 package me.jensvh.spotifree;
 
+import java.util.List;
 import java.util.Optional;
 
 import me.jensvh.spotifree.api.spotify.UrlType;
@@ -28,14 +29,25 @@ public class Main {
 		// options
 		downloadLrc = boot.get("lrc");
 		debugging = boot.get("debug");
+		boolean sync = boot.get("sync");
 		boolean recommendedPlaylist = boot.get("recom") || boot.get("recommended");
 		int max_songs = Integer.valueOf(Optional.ofNullable(boot.getArg("max")).orElse(MAX_SONGS_RECOM_PLAYLIST));
 		int recom_per_song = Integer.valueOf(Optional.ofNullable(boot.getArg("group")).orElse(SONGS_PER_GROUP_RECOM_PLAYLIST));
 		String url = boot.getArg("url");
 		
+		if (sync) {
+            List<String> ids = Spotifree.getPlaylists();
+            
+            for (String id : ids) {
+                Spotifree.downloadPlaylist(id);
+            }
+            return;
+        }
+		
 		if (url == null) {
 			Console.println("No url found.");
 			Console.println("Usage: java -jar spotifree.jar --url <url>");
+			Console.println("-sync => for syncing all your playlists");
 			Console.println("-lrc => for downloading lrc files with lyrics");
 			Console.println("-recom or -recommended => for downloading recommended songs for a playlist");
 			Console.println("--max <amount> => for the amount of recommended songs to download");
@@ -50,6 +62,15 @@ public class Main {
 		
 		// Update youtube-dl
 		YtDlApi.update();
+
+		if (sync) {
+		    List<String> ids = Spotifree.getPlaylists();
+		    
+		    for (String id : ids) {
+		        Spotifree.downloadPlaylist(id);
+		    }
+		    return;
+		}
 		
 		UrlType type = Spotifree.getUrlType(url);
 		String id = Spotifree.getId(url);
