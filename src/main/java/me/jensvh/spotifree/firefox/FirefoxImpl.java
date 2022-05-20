@@ -8,7 +8,8 @@ import me.jensvh.spotifree.utils.SqLite;
 public class FirefoxImpl {
     
     // TODO: search for this url automatically 
-    private static final String profileUrl = "C:/Users/Ikke/AppData/Roaming/Mozilla/Firefox/Profiles/3o9qegmc.default-release-1627316541424";
+    // TODO: Change direct path to be universal!
+    private static final String profileUrl = "C:/Users/ikke/AppData/Roaming/Mozilla/Firefox/Profiles/74qv00yq.default-release";
     private static final String[] necessaryCookies = {
             "sp_t", 
             "OptanonConsent",
@@ -47,7 +48,4 @@ public class FirefoxImpl {
         }
         return "";
     }
-    
-    
-
 }

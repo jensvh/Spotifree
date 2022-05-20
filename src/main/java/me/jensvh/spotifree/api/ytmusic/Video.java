@@ -33,11 +33,13 @@ public class Video {
 		// artists, one should be the same
 		for (String artist : artists) {
 			for (SimplifiedArtist artist2 : track.getArtists()) {
-				if (Utils.simplify(artist).contains(Utils.simplify(artist2.getName()))) {
+				if (Utils.simplify(artist).contains(Utils.simplify(artist2.getName()))
+				        || Utils.simplify(title).contains(Utils.simplify(artist2.getName()))) {
 					return true;
 				}
 			}
 		}
+		
 		return false;
 	}
 	

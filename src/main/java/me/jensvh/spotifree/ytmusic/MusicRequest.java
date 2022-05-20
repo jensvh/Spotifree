@@ -13,6 +13,9 @@ import me.jensvh.spotifree.http.PostRequest;
 
 public class MusicRequest extends PostRequest {
 	
+    /**
+     * TODO check video, because it doesn't download videos
+     */
 	private static final String base_url = "https://music.youtube.com/youtubei/v1/";
 	private static final String params = "?alt=json&key=AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
 	
