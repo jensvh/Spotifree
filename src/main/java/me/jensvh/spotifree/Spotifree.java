@@ -15,7 +15,7 @@ import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.api.spotify.UrlType;
 import me.jensvh.spotifree.api.ytmusic.Video;
-import me.jensvh.spotifree.mp3agic.Mp3agic;
+import me.jensvh.spotifree.id3.Mp3agic;
 import me.jensvh.spotifree.spotify.SpotifyAPI;
 import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Utils;
@@ -101,9 +101,11 @@ public class Spotifree {
 			if (video == null)
 				return;
 			File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
-			//Mp3Tagger.tagMp3(file, track);
 			Mp3agic.addID3Tag(file, track);
-			file.delete();
+			//JAudioTagger.addID3Tag(file, track);
+			//file.delete();
+			String folder = ((path != null) ? Utils.removeInvalidPathChars(path) + File.separator : "");
+			file.renameTo(new File(folder + Utils.removeInvalidPathChars(Utils.removeInBrackets(track.getName()) + " by " + Arrays.toString(track.getArtists())) + ".mp3"));
 		} catch (Exception e) {
 			if (Main.debugging) {
 				e.printStackTrace();
@@ -119,8 +121,8 @@ public class Spotifree {
 			if (video == null)
 				return;
 			File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
-			//Mp3Tagger.tagMp3(file, track);
 			Mp3agic.addID3Tag(file, track);
+			//JAudioTagger.addID3Tag(file, track);
 			file.delete();
 		} catch (Exception e) {
 			if (Main.debugging) {

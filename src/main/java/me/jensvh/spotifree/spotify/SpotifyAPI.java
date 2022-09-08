@@ -1,7 +1,5 @@
 package me.jensvh.spotifree.spotify;
 
-import java.sql.SQLException;
-
 import me.jensvh.spotifree.api.spotify.Album;
 import me.jensvh.spotifree.api.spotify.Auth;
 import me.jensvh.spotifree.api.spotify.ColoredLyricsHelper;
@@ -26,12 +24,7 @@ public class SpotifyAPI {
 	public static void openconnection() {
 	    String cookies = "";
 	    
-	    try {
-            cookies = FirefoxImpl.getCookies();
-        } catch (SQLException e) {
-            System.out.println();
-            e.printStackTrace();
-        }
+        cookies = FirefoxImpl.getCookies();
 	    
 	    GetRequest post = new GetRequest("https://open.spotify.com/get_access_token?reason=transport&productType=web_player")
 	            .addHeader("Cookie", cookies);

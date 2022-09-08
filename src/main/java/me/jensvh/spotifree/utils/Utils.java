@@ -17,7 +17,7 @@ import me.jensvh.spotifree.api.spotify.Album;
 import me.jensvh.spotifree.api.spotify.LyricsLine;
 import me.jensvh.spotifree.api.spotify.Playlist;
 import me.jensvh.spotifree.api.spotify.Track;
-import me.jensvh.spotifree.mp3agic.Mp3agic;
+import me.jensvh.spotifree.id3.Mp3agic;
 
 public class Utils {
 	
@@ -92,6 +92,7 @@ public class Utils {
 		for (final File file : dir.listFiles()) {
 			if (!FilenameUtils.isExtension(file.getName(), "mp3")) continue;
 			String key = Mp3agic.getKey(file);
+			//String key = JAudioTagger.getKey(file);
 			files.put(key, file);
 		}
 		

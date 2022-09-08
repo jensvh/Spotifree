@@ -1,4 +1,4 @@
-package me.jensvh.spotifree.mp3agic;
+package me.jensvh.spotifree.id3;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,9 +73,9 @@ public class Mp3agic {
 			String path = (file.getParent() == null) ? "" : file.getParent() + File.separator;
 			mp3.save(path + Utils.removeInvalidPathChars(Utils.removeInBrackets(track.getName()) + " by " + Arrays.toString(track.getArtists())) + ".mp3");
 		} catch (UnsupportedTagException | InvalidDataException | IOException | NotSupportedException e) {
-			file.delete();
 			throw new Error(4, e, "Could be anything, it just happened while adding metadata into the mp3 file.");
 		}
+		file.delete();
 	}
 	
 	public static void addID3Tag(File file, SimplifiedTrack track) {
