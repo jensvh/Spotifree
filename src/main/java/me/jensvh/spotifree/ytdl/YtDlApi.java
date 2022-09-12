@@ -2,7 +2,6 @@ package me.jensvh.spotifree.ytdl;
 
 import java.io.File;
 
-import me.jensvh.spotifree.Main;
 import me.jensvh.spotifree.utils.FileUtils;
 import me.jensvh.spotifree.utils.Utils;
 
@@ -33,11 +32,6 @@ public class YtDlApi {
 				.addArgument("-f", "bestaudio") // download best audio
 				.addArgument("-o", file_name + ".%(ext)s")
 				.addArgument("\"https://www.youtube.com/watch?v=" + id + "\"");
-		if (Main.downloadLrc) {
-			program.addArgument("--write-sub")
-					.addArgument("--convert-subs", "lrc")
-					.addArgument("--sub-lang", "en");
-		}
 		program.execute();
 		return new File(file_name + ".mp3");
 	}

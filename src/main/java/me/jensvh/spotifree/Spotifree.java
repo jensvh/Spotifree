@@ -16,6 +16,7 @@ import me.jensvh.spotifree.api.spotify.Track;
 import me.jensvh.spotifree.api.spotify.UrlType;
 import me.jensvh.spotifree.api.ytmusic.Video;
 import me.jensvh.spotifree.id3.Mp3agic;
+import me.jensvh.spotifree.lrc.LrcFile;
 import me.jensvh.spotifree.spotify.SpotifyAPI;
 import me.jensvh.spotifree.utils.Console;
 import me.jensvh.spotifree.utils.Utils;
@@ -102,6 +103,8 @@ public class Spotifree {
 				return;
 			File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
 			Mp3agic.addID3Tag(file, track);
+			if (Main.downloadLrc)
+			    LrcFile.createLrcFile(file, track);
 			//JAudioTagger.addID3Tag(file, track);
 			//file.delete();
 			String folder = ((path != null) ? Utils.removeInvalidPathChars(path) + File.separator : "");
@@ -122,6 +125,8 @@ public class Spotifree {
 				return;
 			File file = YtDlApi.downloadMp3(video.getVideo_id(), path);
 			Mp3agic.addID3Tag(file, track);
+			if (Main.downloadLrc)
+			    LrcFile.createLrcFile(file, track);
 			//JAudioTagger.addID3Tag(file, track);
 			file.delete();
 		} catch (Exception e) {

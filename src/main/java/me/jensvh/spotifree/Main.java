@@ -34,9 +34,6 @@ public class Main {
 		int max_songs = Integer.valueOf(Optional.ofNullable(boot.getArg("max")).orElse(MAX_SONGS_RECOM_PLAYLIST));
 		int recom_per_song = Integer.valueOf(Optional.ofNullable(boot.getArg("group")).orElse(SONGS_PER_GROUP_RECOM_PLAYLIST));
 		String url = boot.getArg("url");
-		if (url.indexOf('?') >= 0) {
-		    url = url.substring(0, url.indexOf('?'));
-		}
 		
 		if (sync) {
             List<String> ids = Spotifree.getPlaylists();
@@ -57,6 +54,10 @@ public class Main {
 			Console.println("--group <amount> => for the amount of recommended songs per group of songs");
 			return;
 		}
+		
+		if (url.indexOf('?') >= 0) {
+            url = url.substring(0, url.indexOf('?'));
+        }
 		
 		Console.print("Spotifree 0% initializing...");
 		
