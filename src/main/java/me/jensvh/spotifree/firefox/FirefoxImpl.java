@@ -4,20 +4,17 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import me.jensvh.spotifree.Main;
 import me.jensvh.spotifree.utils.SqLite;
 
 public class FirefoxImpl {
     
-    // TODO: search for this url automatically 
-    // TODO: Change direct path to be universal!
     private static final String base_profile_url = System.getenv("APPDATA") + "\\Mozilla\\Firefox\\Profiles";
     private static final String[] necessaryCookies = {
             "sp_t", 
             "OptanonConsent",
             "OptanonAlertBoxClosed",
             "eupubconsent-v2",
-            "sp_m",
-            "_scid",
             "sp_dc",
             "sp_key",
             "sp_landing"
@@ -28,7 +25,6 @@ public class FirefoxImpl {
             String profileFolder = findFirefoxProfile();
             if (profileFolder == null) {
                 System.out.println("Could not locate a firefox installation, or an active spotify sessions.");
-                System.exit(20);
                 return null;
             }
             
@@ -37,7 +33,12 @@ public class FirefoxImpl {
             SqLite.connectToCookieDatabase(profileFolder + "/cookies.sqlite");
             
             for (String cookie : necessaryCookies) {
-                cookies.append(getCookie(cookie));
+            	String c = getCookie(cookie);
+            	if (Main.debugging)
+            		System.out.println("Firefox cookie, name: " + cookie + ", value: " + c);
+            	if (c == null)
+            		return null;
+                cookies.append(c);
             }
             
             SqLite.disconnect();
@@ -48,7 +49,7 @@ public class FirefoxImpl {
             e.printStackTrace();
             System.exit(21);
         }
-        return "";
+        return null;
     }
     
     private static String getCookie(String name) throws SQLException {
@@ -61,7 +62,8 @@ public class FirefoxImpl {
                 continue;
             return name + "=" + result.getString("value") + "; ";
         }
-        return "";
+       
+        return null;
     }
     
     private static String findFirefoxProfile() {

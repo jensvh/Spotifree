@@ -10,6 +10,7 @@ import me.jensvh.spotifree.api.spotify.Playlist;
 import me.jensvh.spotifree.api.spotify.RecommendedTracks;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
+import me.jensvh.spotifree.chrome.ChromeImpl;
 import me.jensvh.spotifree.firefox.FirefoxImpl;
 import me.jensvh.spotifree.http.GetRequest;
 import me.jensvh.spotifree.http.GsonResponseHandler;
@@ -25,6 +26,17 @@ public class SpotifyAPI {
 	    String cookies = "";
 	    
         cookies = FirefoxImpl.getCookies();
+        if (cookies == null) {
+        	cookies = ChromeImpl.getCookies();
+        	if (cookies == null) {
+        		System.out.println("Make sure you have an active spotify connection on a chrome or firefox browser. (open.spotify.com)");
+        		System.exit(27);
+        	} else {
+        		System.out.println("Found a spotify connection on Chrome");
+        	}
+        } else {
+        	System.out.println("Found a spotify connection on Firefox.");
+        }
 	    
 	    GetRequest post = new GetRequest("https://open.spotify.com/get_access_token?reason=transport&productType=web_player")
 	            .addHeader("Cookie", cookies);
