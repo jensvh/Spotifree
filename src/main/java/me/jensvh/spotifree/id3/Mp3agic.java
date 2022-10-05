@@ -11,6 +11,8 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.NotSupportedException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import me.jensvh.spotifree.Main;
+import me.jensvh.spotifree.api.spotify.AudioFeature;
 import me.jensvh.spotifree.api.spotify.Lyrics;
 import me.jensvh.spotifree.api.spotify.SimplifiedTrack;
 import me.jensvh.spotifree.api.spotify.Track;
@@ -48,6 +50,11 @@ public class Mp3agic {
 			byte[] data = Utils.loadDateFromUrl(track.getAlbum().getImages()[0].getUrl());
 			tag.setAlbumImage(data, "image/jpg");
 			
+			// Add bpm
+			if (Main.audioFeatures) {
+				AudioFeature feature = SpotifyAPI.getAudiofeature(track.getId());
+				tag.setBPM(Math.round(feature.getTempo()));
+			}
 			// Add lyrics
 			// New spotify lyrics api
     			try {

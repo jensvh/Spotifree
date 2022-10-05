@@ -19,6 +19,7 @@ public class Main {
 	
 	public static boolean downloadLrc = false;
 	public static boolean debugging = false;
+	public static boolean audioFeatures = false;
 	
 	private static final String MAX_SONGS_RECOM_PLAYLIST = "20";
 	private static final String SONGS_PER_GROUP_RECOM_PLAYLIST = "5";
@@ -29,6 +30,7 @@ public class Main {
 		// options
 		downloadLrc = boot.get("lrc");
 		debugging = boot.get("debug");
+		audioFeatures = boot.get("bpm");
 		boolean sync = boot.get("sync");
 		boolean recommendedPlaylist = boot.get("recom") || boot.get("recommended");
 		int max_songs = Integer.valueOf(Optional.ofNullable(boot.getArg("max")).orElse(MAX_SONGS_RECOM_PLAYLIST));
@@ -49,6 +51,7 @@ public class Main {
 			Console.println("Usage: java -jar spotifree.jar --url <url>");
 			Console.println("-sync => for syncing all your playlists");
 			Console.println("-lrc => for downloading lrc files with lyrics");
+			Console.println("-bpm => add bpm to songs, more network traffic");
 			Console.println("-recom or -recommended => for downloading recommended songs for a playlist");
 			Console.println("--max <amount> => for the amount of recommended songs to download");
 			Console.println("--group <amount> => for the amount of recommended songs per group of songs");

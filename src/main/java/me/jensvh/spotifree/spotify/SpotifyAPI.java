@@ -1,6 +1,7 @@
 package me.jensvh.spotifree.spotify;
 
 import me.jensvh.spotifree.api.spotify.Album;
+import me.jensvh.spotifree.api.spotify.AudioFeature;
 import me.jensvh.spotifree.api.spotify.Auth;
 import me.jensvh.spotifree.api.spotify.ColoredLyricsHelper;
 import me.jensvh.spotifree.api.spotify.Lyrics;
@@ -133,6 +134,14 @@ public class SpotifyAPI {
         
         return playlist;
     }
+	
+	public static AudioFeature getAudiofeature(String id) {
+		checkConnection();
+		
+		GetRequest get = new GetRequest("https://api.spotify.com/v1/audio-features/" + id)
+	            .addHeader("Authorization", "Bearer " + token);
+	    return get.send(new GsonResponseHandler<AudioFeature>(AudioFeature.class));
+	}
 	
 	private static void checkConnection() {
 		if (token == null)
